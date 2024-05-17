@@ -1,0 +1,128 @@
+
+function News() {
+  const [newsData, setNewsData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const articlesPerPage = 20;
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3002/api/news/getdailynews"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        setNewsData(data);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!newsData || !newsData.articles) {
+    return <div>No articles found.</div>;
+  }
+
+  // Pagination
+  const indexOfLastArticle = currentPage * articlesPerPage;
+  const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+  const currentArticles = newsData.articles.slice(
+    indexOfFirstArticle,
+    indexOfLastArticle
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  return (
+    <div className="container mx-auto px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {currentArticles.map((article, index) => (
+          <ArticleCard key={index} article={article} />
+        ))}
+      </div>
+      <Pagination
+        articlesPerPage={articlesPerPage}
+        totalArticles={newsData.articles.length}
+        paginate={paginate}
+      />
+    </div>
+  );
+}
+
+function Loader() {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900"></div>
+    </div>
+  );
+}
+
+function ArticleCard({ article }) {
+  return (
+    <div className="border border-gray-200 rounded-lg overflow-hidden">
+      <a href={article.url} target="_blank" rel="noopener noreferrer">
+        <div className="relative">
+          <img
+            src={article.urlToImage}
+            alt={article.title}
+            className="w-full h-56 object-cover"
+          />
+          <span className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
+        </div>
+        <div className="p-4">
+          <h3 className="text-lg font-bold text-gray-900 mb-2">{article.title}</h3>
+          <p className="text-sm text-gray-600 mb-4">By {article.author}</p>
+          <p className="text-sm text-gray-700">{article.description}</p>
+        </div>
+        <div className="bg-gray-100 px-4 py-2 flex justify-between items-center">
+          <p className="text-xs text-gray-500">Published: {article.publishedAt}</p>
+          <p className="text-xs text-gray-500">Reading time: 3 minutes</p>
+        </div>
+      </a>
+    </div>
+  );
+}
+
+function Pagination({ articlesPerPage, totalArticles, paginate }) {
+  const pageNumbers = [];
+
+  for (let i = 1; i <= Math.ceil(totalArticles / articlesPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <nav className="mt-4">
+      <ul className="flex justify-center">
+        {pageNumbers.map((number) => (
+          <li key={number} className="mx-1">
+            <a
+              onClick={() => paginate(number)}
+              href="#"
+              className="px-3 py-1 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300"
+            >
+              {number}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+export default News;
