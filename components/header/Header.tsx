@@ -1,6 +1,11 @@
+import { Button } from "@mui/material";
 import Link from "next/link";
+import { useState } from "react";
+
 
 const Header = () => {
+const [enable, setEnable] = useState(false)
+
   return (
     <header className="bg-white shadow-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,7 +17,7 @@ const Header = () => {
 
           {/* Navigation Menu */}
           <nav className="hidden md:flex space-x-4">
-            <NavLink to="/">Home</NavLink>
+            {enable && <NavLink to="/">Home</NavLink>}
             <NavLink to="/about-us">About</NavLink>
             <NavLink to="/news">News</NavLink>
             {/* <NavLink to="/history">History</NavLink> */}
@@ -32,6 +37,9 @@ const Header = () => {
               {" "}
               Blog{" "}
             </a>
+            {/* <Button  onClick={()=>{setEnable((prev)=>!prev)}} > Hello </Button> */}
+            
+
           </nav>
 
           {/* Auth Links */}
@@ -44,10 +52,10 @@ const Header = () => {
             </Link>
 
             <Link
-              href="/register"
+              href="/signup"
               className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
             >
-              Register
+              signup
             </Link>
           </div>
 

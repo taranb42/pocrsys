@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const Hero = () => {
     return (
       <div className="bg-white">
@@ -73,12 +75,12 @@ const Hero = () => {
                   usability.
                 </p>
   
-                <a
-                  href="/Register"
+                <Link
+                  href="/signup"
                   className="mt-8 inline-block rounded bg-blue-600 px-12 py-3 text-sm font-medium text-white transition blue:bg-indigo-700 focus:outline-none focus:ring focus:ring-yellow-400"
                 >
                   Register With Us
-                </a>
+                </Link>
               </div>
             </div>
           </div>
