@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import Link from "next/link";
 
 const Footer = () => {
@@ -38,9 +39,10 @@ const Footer = () => {
                     className="w-full border-none focus:border-transparent focus:ring-transparent sm:text-sm"
                   />
 
-                  <button className="mt-1 w-full rounded bg-blue-500 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-none blue:bg-teal-600 sm:mt-0 sm:w-auto sm:shrink-0">
+                  {/* <button className="mt-1 w-full rounded bg-blue-500 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-none blue:bg-teal-600 sm:mt-0 sm:w-auto sm:shrink-0">
                     Contact
-                  </button>
+                  </button> */}
+                  <Button variant="contained">Contact</Button>
                 </div>
               </form>
             </div>
@@ -79,8 +81,10 @@ const Footer = () => {
                 </li>
               </ul>
 
-              <p className="mt-8 text-xs text-gray-500">&copy; {new Date().getFullYear()}. R systems. All rights reserved.</p>
-
+              <p className="mt-8 text-xs text-gray-500">
+                &copy; {new Date().getFullYear()}. R systems. All rights
+                reserved.
+              </p>
             </div>
           </div>
         </div>
