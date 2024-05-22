@@ -27,7 +27,8 @@ function News() {
           "http://localhost:3002/api/news/getdailynews"
         );
         if (!response.ok) {
-          throw new Error("Failed to fetch data");
+            throw new Error("Failed to fetch data");
+          }
         const data: NewsData = await response.json();
         setNewsData(data);
         setLoading(false);
