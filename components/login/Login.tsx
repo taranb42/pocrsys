@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import TextField from "@mui/material/TextField";
 
 
 
@@ -87,35 +88,43 @@ const Login: React.FC = () => {
         </h2>
         <p className="text-sm text-gray-500 text-center">
           Don't have an account?{' '}
-          <a href="/Register" className="text-blue-500 hover:underline">
+          <a href="/signup" className="text-blue-500 hover:underline">
             Sign Up
           </a>
         </p>
 
         <form onSubmit={loginuser} className="mt-6 space-y-4">
-          <input
-            type="email"
-            name="email"
-            value={data.email}
-            onChange={handleChange}
-            className="w-full rounded-lg border-gray-300 p-4 text-sm shadow-sm placeholder-gray-500"
-            placeholder="Email"
-            required
-          />
+        <div className="col-span-6">
+                  <TextField
+                    required
+                    id="email"
+                    label="Email"
+                    name="email"
+                    type="email"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                  />
+                </div>
 
-          <input
-            type="password"
-            name="password"
-            value={data.password}
-            onChange={handleChange}
-            className="w-full rounded-lg border-gray-300 p-4 text-sm shadow-sm placeholder-gray-500"
-            placeholder="Password"
-            required
-          />
+          
+
+                <div className="col-span-6 sm:col-span-3">
+                  <TextField
+                    required
+                    id="password"
+                    label="Password"
+                    name="password"
+                    type="password"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                  />
+                </div>
 
           <button
             type="submit"
-            className="w-full rounded-lg bg-blue-500 text-white py-3 text-sm font-medium hover:bg-blue-600"
+            className="w-full rounded-lg bg-blue-500 text-white py-3 text-sm font-medium hover:bg-blue-500"
           >
             Login
           </button>

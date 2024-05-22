@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import Link from "next/link";
 
 const Footer = () => {
@@ -9,7 +9,7 @@ const Footer = () => {
           <div className="border-b border-gray-100 py-8 lg:order-last lg:border-b-0 lg:border-s lg:py-16 lg:ps-16">
             <div className="mt-8 space-y-4 lg:mt-0">
               <div>
-                <h2 className="text-2xl font-medium text-gray-900">
+                <h2 className="text-2xl font-medium text-blue-500">
                   <u>Request a Call</u>
                 </h2>
 
@@ -31,18 +31,20 @@ const Footer = () => {
                   Email{" "}
                 </label>
 
-                <div className="rounded-md border border-gray-100 p-2 focus-within:ring sm:flex sm:items-center sm:gap-4">
-                  <input
+                <div className="rounded-md sm:flex sm:items-center sm:gap-4">
+                  <TextField
+                    required
+                    id="email"
+                    label="Email"
+                    name="email"
                     type="email"
-                    id="UserEmail"
-                    placeholder="contact@rsystems.com"
+                    variant="outlined"
+                    fullWidth
                     className="w-full border-none focus:border-transparent focus:ring-transparent sm:text-sm"
                   />
-
-                  {/* <button className="mt-1 w-full rounded bg-blue-500 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-none blue:bg-teal-600 sm:mt-0 sm:w-auto sm:shrink-0">
+                  <Button variant="contained" className=" h-12 w-28 sm:mt-0 sm:ml-2">
                     Contact
-                  </button> */}
-                  <Button variant="contained">Contact</Button>
+                  </Button>
                 </div>
               </form>
             </div>
