@@ -1,12 +1,11 @@
+import Blog from "@/components/blog/Blog";
 
-const Blog = () => {
+const BlogScreen = () => {
   return (
     <div>
-      <a href="https://www.rsystems.com/blog/" target="_blank" rel="noopener noreferrer">
-        Visit the R Systems Blog
-      </a>
+      <Blog/>
     </div>
   );
-};
+}
 
-export default Blog;
+export default BlogScreen;
