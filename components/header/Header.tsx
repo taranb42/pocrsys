@@ -1,10 +1,16 @@
+import Link from 'next/link';
 import { Button } from "@mui/material";
-import Link from "next/link";
-import { useState } from "react";
-
+import { clearCookies, getToken } from '../utils/utils';
+import { useRouter } from 'next/router';
 
 const Header = () => {
-const [enable, setEnable] = useState(false)
+
+const router = useRouter()
+
+  const logoutuser = () => {
+   clearCookies();
+   router.push("/")
+  };
 
   return (
     <header className="bg-white shadow-md">
@@ -17,7 +23,7 @@ const [enable, setEnable] = useState(false)
 
           {/* Navigation Menu */}
           <nav className="hidden md:flex space-x-4">
-            {enable && <NavLink to="/">Home</NavLink>}
+            {getToken() && <NavLink to="/">Home</NavLink>}
             <NavLink to="/about-us">About</NavLink>
             <NavLink to="/news">News</NavLink>
             {/* <NavLink to="/history">History</NavLink> */}
@@ -29,34 +35,34 @@ const [enable, setEnable] = useState(false)
               Services
             </a>
             <NavLink to="/Projects">Projects </NavLink>
-            <a
-              href="https://www.rsystems.com/blog/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {" "}
-              Blog{" "}
-            </a>
-            {/* <Button  onClick={()=>{setEnable((prev)=>!prev)}} > Hello </Button> */}
-            
-
+            <NavLink to="/blog">Blog</NavLink>
           </nav>
 
           {/* Auth Links */}
           <div className="flex items-center space-x-4">
-            <Link
-              href="/login"
-              className="text-gray-600 hover:text-gray-800 transition duration-300"
-            >
-              Login
-            </Link>
-
-            <Link
-              href="/signup"
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
-            >
-              Sign Up
-            </Link>
+            {getToken() ? (
+              <Button
+                onClick={logoutuser}
+                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300"
+              >
+                Logout
+              </Button>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="text-gray-600 hover:text-gray-800 transition duration-300"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -82,7 +88,7 @@ const [enable, setEnable] = useState(false)
 };
 
 // NavLink component for better consistency and easier styling
-const NavLink = ({ to, children }:{ to:string, children:any}) => (
+const NavLink = ({ to, children }: { to: string; children: any }) => (
   <Link
     href={to}
     className="text-gray-600 hover:text-gray-800 transition duration-300"

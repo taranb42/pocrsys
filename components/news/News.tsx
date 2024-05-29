@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { getToken } from "../utils/utils";
+import { useRouter } from "next/navigation";
 
 interface Article {
   url: string;
@@ -19,6 +21,13 @@ function News() {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const articlesPerPage = 20;
+  const router = useRouter();
+
+  useLayoutEffect(() => {
+    if (!getToken()) {
+      router.push("/login");
+    }
+  }, []);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -27,8 +36,8 @@ function News() {
           "http://localhost:3002/api/news/getdailynews"
         );
         if (!response.ok) {
-            throw new Error("Failed to fetch data");
-          }
+          throw new Error("Failed to fetch data");
+        }
         const data: NewsData = await response.json();
         setNewsData(data);
         setLoading(false);
@@ -38,7 +47,9 @@ function News() {
       }
     };
 
-    fetchNews();
+    if (getToken()) {
+      fetchNews();
+    }
   }, []);
 
   if (loading) {
@@ -104,12 +115,16 @@ function ArticleCard({ article }: ArticleCardProps) {
           <span className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
         </div>
         <div className="p-4">
-          <h3 className="text-lg font-bold text-gray-900 mb-2">{article.title}</h3>
+          <h3 className="text-lg font-bold text-gray-900 mb-2">
+            {article.title}
+          </h3>
           <p className="text-sm text-gray-600 mb-4">By {article.author}</p>
           <p className="text-sm text-gray-700">{article.description}</p>
         </div>
         <div className="bg-gray-100 px-4 py-2 flex justify-between items-center">
-          <p className="text-xs text-gray-500">Published: {new Date(article.publishedAt).toLocaleDateString()}</p>
+          <p className="text-xs text-gray-500">
+            Published: {new Date(article.publishedAt).toLocaleDateString()}
+          </p>
           <p className="text-xs text-gray-500">Reading time: 3 minutes</p>
         </div>
       </a>
@@ -123,7 +138,11 @@ interface PaginationProps {
   paginate: (pageNumber: number) => void;
 }
 
-function Pagination({ articlesPerPage, totalArticles, paginate }: PaginationProps) {
+function Pagination({
+  articlesPerPage,
+  totalArticles,
+  paginate,
+}: PaginationProps) {
   const pageNumbers: number[] = [];
 
   for (let i = 1; i <= Math.ceil(totalArticles / articlesPerPage); i++) {
